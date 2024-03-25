@@ -1,4 +1,4 @@
-module example/web-service-gin
+module backend/user-service
 
 go 1.22.1
 
