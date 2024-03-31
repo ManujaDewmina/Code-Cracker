@@ -282,11 +282,11 @@ func uploadSubmission(c *gin.Context) {
 		return
 	}
 
-	// err = os.RemoveAll("temp")
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete temp folder: " + err.Error()})
-	// 	return
-	// }
+	err = os.RemoveAll("temp")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete temp folder: " + err.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Submission created successfully"})
 }
