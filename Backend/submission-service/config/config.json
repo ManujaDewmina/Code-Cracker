@@ -1,0 +1,23 @@
+{
+    "database": {
+      "host": "host.docker.internal",
+      "port": 5432,
+      "user": "postgres",
+      "password": "postgres",
+      "dbname": "submissiondb",
+      "sslmode": "disable"
+    },
+    "consul": {
+      "address": "consul",
+      "port": 8500
+    },
+    "endpoint": {
+      "name": "submissionservice",
+      "address": "",
+      "port": 8082
+    },
+    "services": {
+      "apigateway": "http://apigateway:8083"
+    }
+  }
+  

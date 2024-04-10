@@ -4,15 +4,17 @@
       "port": 5432,
       "user": "postgres",
       "password": "postgres",
-      "dbname": "submissiondb",
+      "dbname": "challengedb",
       "sslmode": "disable"
     },
-    "server": {
-      "address": "submissionservice",
-      "port": 8082
+    "consul": {
+      "address": "consul",
+      "port": 8500
     },
-    "services": {
-      "apigateway": "http://apigateway:8083"
+    "endpoint": {
+      "name": "challengeservice",
+      "address": "",
+      "port": 8081
     }
   }
   
