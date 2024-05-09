@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getUserByUserName } from '../api/UserEndpoints';
+import axios from 'axios';
 
 const HomePage: React.FC = () => {
-  const handleLogin = () => {
-    window.location.href = '/user-home';
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await getUserByUserName(axios, username);
+      const userData = response.data; 
+
+      if (userData.userpassword === password) {
+        window.location.href = '/user-home';
+      } else {
+        setErrorMessage("Incorrect password");
+      }
+    } catch (error) {
+      setErrorMessage("Incorrect Username");
+    }
   };
 
   const handleCreateAccount = () => {
@@ -13,12 +30,25 @@ const HomePage: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <h1 style={{ textAlign: 'center' }}>Home Page</h1>
       <div style={{ textAlign: 'center' }}>
-        <input type="text" placeholder="Username" style={{ marginBottom: '10px' }} />
+        <input 
+          type="text" 
+          placeholder="Username" 
+          style={{ marginBottom: '10px' }} 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
+        />
         <br />
-        <input type="password" placeholder="Password" style={{ marginBottom: '10px' }} />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          style={{ marginBottom: '10px' }} 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+        />
         <br />
         <button onClick={handleLogin} style={{ marginBottom: '30px' }}>Login</button>
         <br />
+        <div style={{ color: 'red' }}>{errorMessage}</div> 
         <button onClick={handleCreateAccount}>Create Account</button>
       </div>
     </div>

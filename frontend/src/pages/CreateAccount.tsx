@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
+import { createUser } from '../api/UserEndpoints';
+import axios from 'axios';
 
 const CreateAccountPage: React.FC = () => {
   const [username, setUsername] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullname, setFullName] = useState('');
+  const [userpassword, setUserPassword] = useState('');
   const [id, setId] = useState('');
+  const [error, setError] = useState('');
 
-  // Function to generate a random ID
   const generateId = () => {
-    const randomId = Math.random().toString(36).substring(2, 10); // Generate a random string
-    setId(randomId); // Update the state with the generated ID
+    const randomNumber = Math.floor(Math.random() * 1000000);
+    setId(randomNumber.toString()); 
   };
 
-  // Function to handle form submission
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Add logic to create account using the entered data
-    console.log('Account created:', { username, fullName, password, id });
+
+    if (!username || !fullname || !userpassword || !id) {
+      setError('Click Generate ID button');
+      return;
+    }
+
+    const user = { id: parseInt(id), username, fullname, userpassword};
+    try {
+      await createUser(axios, user);
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error creating account:', error);
+    }
   };
 
   return (
@@ -25,14 +37,15 @@ const CreateAccountPage: React.FC = () => {
       <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} style={{ marginBottom: '10px' }} required />
         <br />
-        <input type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} style={{ marginBottom: '10px' }} required />
+        <input type="text" placeholder="Full Name" value={fullname} onChange={(e) => setFullName(e.target.value)} style={{ marginBottom: '10px' }} required />
         <br />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginBottom: '10px' }} required />
+        <input type="password" placeholder="Password" value={userpassword} onChange={(e) => setUserPassword(e.target.value)} style={{ marginBottom: '10px' }} required />
         <br />
         <button type="button" onClick={generateId} style={{ marginBottom: '10px' }}>Generate ID</button>
         <p>Auto-generated ID: {id}</p>
         <br />
         <button type="submit">Create Account</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );
