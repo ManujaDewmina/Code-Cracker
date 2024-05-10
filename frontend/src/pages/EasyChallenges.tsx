@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { getChallenges } from '../api/ChallengeEndpoints';
+import { getChallenges, getChallengesByDifficulty } from '../api/ChallengeEndpoints';
 
 interface Challenge {
     id: string;
@@ -20,8 +20,8 @@ interface ChallengeMin {
     authorid: number;
 }
 
-const ChallengeHomePage: React.FC = () => {
-    const [challenges, setChallenges] = useState<ChallengeMin[]>([]); 
+const EasyChallengePage: React.FC = () => {
+    const [Challenges, setChallenges] = useState<ChallengeMin[]>([]); 
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -64,9 +64,10 @@ const ChallengeHomePage: React.FC = () => {
     };
 
     const fetchChallengeData = async () => {
-        const response = await getChallenges(axios);
-        const fetchedChallenges = response.data; 
-        setChallenges(fetchedChallenges);
+        const response = await getChallengesByDifficulty(axios, 'easy');
+        const challenges = response.data; 
+        setChallenges(challenges);
+        console.log(challenges);
     };
 
     useEffect(() => {
@@ -83,35 +84,33 @@ const ChallengeHomePage: React.FC = () => {
             </ul>
         </nav>
 
-        {challenges === null ? (
+        {Challenges === null ? (
             <p>No challenges available.</p>
         ) : (
-            <>
-                <div>
-                    {challenges.map((challenge, index) => (
-                        <div key={index}>
-                            <p>Challenge Title: {challenge.title}</p>
-                            <p>Challenge Difficulty: {challenge.difficulty}</p>
-                            <p>Challenge Author ID: {challenge.authorid}</p>
-                        </div>
-                    ))}
-                </div>
-            </>
+            <div>
+                {Challenges.map((challenge, index) => (
+                    <div key={index}>
+                        <p>Challenge Title: {challenge.title}</p>
+                        <p>Challenge Difficulty: {challenge.difficulty}</p>
+                        <p>Challenge Author ID: {challenge.authorid}</p>
+                    </div>
+                ))}
+            </div>
         )}
 
-          <div style={{ marginBottom: '10px' }}>
-              <button onClick={EasyChallenges} style={{ marginRight: '30px' }} >Easy</button>
-              <button onClick={MediumChallenges} style={{ marginRight: '30px' }}>Medium</button>
-              <button onClick={HardChallenge} >Hard</button>
-          </div>
+        <div style={{ marginBottom: '10px' }}>
+            <button onClick={EasyChallenges} style={{ marginRight: '30px' }} >Easy</button>
+            <button onClick={MediumChallenges} style={{ marginRight: '30px' }}>Medium</button>
+            <button onClick={HardChallenge} >Hard</button>
+        </div>
 
-          <div>
-              <button onClick={getAllChallenges} style={{ marginRight: '30px' }} >All Challenges</button>
-              <button onClick={getMyChallenges} style={{ marginRight: '30px' }}>My Challenges</button>
-              <button onClick={createChallenge} >Create Challenges</button>
-          </div>
+        <div>
+            <button onClick={getAllChallenges} style={{ marginRight: '30px' }} >All Challenges</button>
+            <button onClick={getMyChallenges} style={{ marginRight: '30px' }}>My Challenges</button>
+            <button onClick={createChallenge} >Create Challenges</button>
+        </div>
         </div>
     );
 }
 
-export default ChallengeHomePage;
+export default EasyChallengePage;

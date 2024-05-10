@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { getChallenges } from '../api/ChallengeEndpoints';
+import { getUserChallenges } from '../api/ChallengeEndpoints';
 
 interface Challenge {
     id: string;
@@ -20,8 +20,8 @@ interface ChallengeMin {
     authorid: number;
 }
 
-const ChallengeHomePage: React.FC = () => {
-    const [challenges, setChallenges] = useState<ChallengeMin[]>([]); 
+const UserChallengePage: React.FC = () => {
+    const [Challenges, setChallenges] = useState<ChallengeMin[]>([]); 
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -45,30 +45,19 @@ const ChallengeHomePage: React.FC = () => {
 
     const getMyChallenges = () => {
         window.location.href = `/user-challenges?id=${id}`;
-    };
+      };
     
-    const createChallenge = () => {
-      window.location.href = `/create-challenge?id=${id}`;
-    };
-
-    const EasyChallenges = () => {
-        window.location.href = `/easy-challenges?id=${id}`;
-    };
-
-    const MediumChallenges = () => {
-        window.location.href = `/medium-challenges?id=${id}`;
-    };
-
-    const HardChallenge = () => {
-        window.location.href = `/hard-challenges?id=${id}`;
-    };
+      const createChallenge = () => {
+        window.location.href = `/create-challenge?id=${id}`;
+      };
+    
 
     const fetchChallengeData = async () => {
-        const response = await getChallenges(axios);
-        const fetchedChallenges = response.data; 
-        setChallenges(fetchedChallenges);
+        const response = await getUserChallenges(axios, id!);
+        const challenges = response.data; 
+        setChallenges(challenges);
     };
-
+    
     useEffect(() => {
         fetchChallengeData();
     }, [id]);
@@ -83,12 +72,12 @@ const ChallengeHomePage: React.FC = () => {
             </ul>
         </nav>
 
-        {challenges === null ? (
+        {Challenges === null ? (
             <p>No challenges available.</p>
         ) : (
             <>
                 <div>
-                    {challenges.map((challenge, index) => (
+                    {Challenges.map((challenge, index) => (
                         <div key={index}>
                             <p>Challenge Title: {challenge.title}</p>
                             <p>Challenge Difficulty: {challenge.difficulty}</p>
@@ -99,19 +88,13 @@ const ChallengeHomePage: React.FC = () => {
             </>
         )}
 
-          <div style={{ marginBottom: '10px' }}>
-              <button onClick={EasyChallenges} style={{ marginRight: '30px' }} >Easy</button>
-              <button onClick={MediumChallenges} style={{ marginRight: '30px' }}>Medium</button>
-              <button onClick={HardChallenge} >Hard</button>
-          </div>
-
-          <div>
-              <button onClick={getAllChallenges} style={{ marginRight: '30px' }} >All Challenges</button>
-              <button onClick={getMyChallenges} style={{ marginRight: '30px' }}>My Challenges</button>
-              <button onClick={createChallenge} >Create Challenges</button>
-          </div>
+        <div>
+            <button onClick={getAllChallenges} style={{ marginRight: '30px' }} >All Challenges</button>
+            <button onClick={getMyChallenges} style={{ marginRight: '30px' }}>My Challenges</button>
+            <button onClick={createChallenge} >Create Challenges</button>
+        </div>
         </div>
     );
 }
 
-export default ChallengeHomePage;
+export default UserChallengePage;

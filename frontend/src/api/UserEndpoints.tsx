@@ -51,7 +51,9 @@ export const getUserByUserName = async (axios: AxiosInstance, username : string)
 export const updateUser = async (axios: AxiosInstance, userId : string, user : any) => {
     const url = `${BFF_URLS.userService}/update/${userId}`
     const method = "PUT";
-    const headers = {};
+    const headers = {
+        'Content-Type': 'application/json',
+    };
     return axios.request({
         url,
         method,

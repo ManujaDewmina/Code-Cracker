@@ -64,6 +64,10 @@ curl -X POST \
 
 curl -X GET http://localhost:8083/challenge/challenges
 
+### 2.3. Get user challenges
+
+curl -X GET http://localhost:8083/challenge/challenges/user/782077
+
 ### 2.3. Get challenge by ID
 
 curl -X GET http://localhost:8083/challenge/1

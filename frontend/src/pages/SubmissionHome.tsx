@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface Submission {
   username: string;
@@ -13,16 +14,20 @@ const SubmissionHomePage: React.FC = () => {
     id: "123456"
   });
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id');
+
   const userHome = () => {
-    window.location.href = '/user-home'; 
+    window.location.href = `/user-home?id=${id}`; 
   };
 
   const challengeHome = () => {
-    window.location.href = '/challenge-home'; 
+    window.location.href = `/challenge-home?id=${id}`; 
   };
 
   const submissionHome = () => {
-    window.location.href = '/submission-home'; 
+    window.location.href = `/submission-home?id=${id}`; 
   };
 
   return (

@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getUser, updateUser, deleteUser} from '../api/UserEndpoints';
+import axios from 'axios';
 
 interface User {
   username: string;
@@ -8,15 +11,27 @@ interface User {
 
 const UserHomePage: React.FC = () => {
   const [user, setUser] = useState<User>({
-    username: "john_doe",
-    fullname: "John Doe",
-    id: "123456"
+    username: "",
+    fullname: "",
+    id: ""
   });
 
-  const updateUser = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get('id');
+
+  const logOut = () => {
+    window.location.href = '/';
+  };
+
+  const updateUserData = async () => {
     const newUsername = prompt("Enter new username:");
     const newFullname = prompt("Enter new full name:");
+
     if (newUsername && newFullname) {
+      const updateuser = { id: parseInt(id!), username: newUsername, fullname: newFullname};
+      await updateUser(axios, id!, updateuser);
+
       setUser({
         ...user,
         username: newUsername,
@@ -25,24 +40,42 @@ const UserHomePage: React.FC = () => {
     }
   };
 
-  const deleteUser = () => {
-    // Logic to delete user
+  const deleteUserData = async () => {
+    await deleteUser(axios, id!);
+    window.location.href = '/';
   };
 
   const userHome = () => {
-    window.location.href = '/user-home'; 
+    window.location.href = `/user-home?id=${id}`; 
   };
 
   const challengeHome = () => {
-    window.location.href = '/challenge-home'; 
+    window.location.href = `/challenge-home?id=${id}`; 
   };
 
   const submissionHome = () => {
-    window.location.href = '/submission-home'; 
+    window.location.href = `/submission-home?id=${id}`; 
   };
 
+  const fetchUserData = async (userId: string) => {
+    const response = await getUser(axios, userId);
+    const userData = response.data; 
+
+    const currentUserData: User = {
+      username: userData.username,
+      fullname: userData.fullname,
+      id: userData.id
+    };
+    setUser(currentUserData);
+  };
+
+  useEffect(() => {
+    fetchUserData(id!);
+  }, [id]);
+
+
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <nav>
         <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none', padding: 0 }}>
           <li style={{ marginRight: '10px' }}><button onClick={userHome} >User</button></li>
@@ -52,15 +85,15 @@ const UserHomePage: React.FC = () => {
       </nav>
 
       <div>
-        <img src="user_icon_url" alt="User Icon" />
         <p>Username: {user.username}</p>
         <p>Full Name: {user.fullname}</p>
         <p>ID: {user.id}</p>
       </div>
 
       <div>
-        <button onClick={updateUser} style={{ marginRight: '30px' }}>Update User</button>
-        <button onClick={deleteUser}>Delete User</button>
+        <button onClick={logOut} style={{ marginRight: '30px' }} >Log Out</button>
+        <button onClick={updateUserData} style={{ marginRight: '30px' }}>Update User</button>
+        <button onClick={deleteUserData}>Delete User</button>
       </div>
     </div>
   );

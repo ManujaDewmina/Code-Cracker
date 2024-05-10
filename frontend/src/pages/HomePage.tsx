@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
       const userData = response.data; 
 
       if (userData.userpassword === password) {
-        window.location.href = '/user-home';
+        window.location.href = `/user-home?id=${userData.id}`;
       } else {
         setErrorMessage("Incorrect password");
       }

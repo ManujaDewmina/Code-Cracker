@@ -7,6 +7,11 @@ import CreateAccountPage from './pages/CreateAccount';
 import UserHomePage from './pages/UserHome';
 import ChallengeHomePage from './pages/ChallengeHome';
 import SubmissionHomePage from './pages/SubmissionHome';
+import UserChallengePage from './pages/UserChallenges';
+import EasyChallengePage from './pages/EasyChallenges';
+import MediumChallengePage from './pages/MediumChallenges';
+import HardChallengePage from './pages/HardChallenges';
+import CreateChallengePage from './pages/CreateChallenge';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -16,6 +21,11 @@ const routes = [
   { path: '/user-home', component: UserHomePage },
   { path: '/challenge-home', component: ChallengeHomePage },
   { path: '/submission-home', component: SubmissionHomePage },
+  { path: '/user-challenges', component: UserChallengePage },
+  { path: '/easy-challenges', component: EasyChallengePage },
+  { path: '/medium-challenges', component: MediumChallengePage },
+  { path: '/hard-challenges', component: HardChallengePage },
+  { path: '/create-challenge', component: CreateChallengePage },
 ];
 
 function App() {
