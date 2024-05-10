@@ -14,11 +14,18 @@ const CreateAccountPage: React.FC = () => {
     setId(randomNumber.toString()); 
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!username || !fullname || !userpassword || !id) {
-      setError('Click Generate ID button');
+  const handleSubmit = async () => {
+    if (!username) {
+      setError('Username is required');
+      return;
+    } else if (!fullname) {
+      setError('Full name is required');
+      return;
+    } else if (!userpassword) {
+      setError('Password is required');
+      return;
+    } else if (!id) {
+      setError('ID is required. Click "Generate ID" to generate one.');
       return;
     }
 
@@ -34,19 +41,37 @@ const CreateAccountPage: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <h1 style={{ textAlign: 'center' }}>Create Account</h1>
-      <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} style={{ marginBottom: '10px' }} required />
+      <div style={{ textAlign: 'center' }}>
+      <input 
+          type="text" 
+          placeholder="Username" 
+          style={{ marginBottom: '10px' }} 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} 
+        />
         <br />
-        <input type="text" placeholder="Full Name" value={fullname} onChange={(e) => setFullName(e.target.value)} style={{ marginBottom: '10px' }} required />
+        <input 
+          type="text" 
+          placeholder="Full Name" 
+          style={{ marginBottom: '10px' }} 
+          value={fullname} 
+          onChange={(e) => setFullName(e.target.value)}
+        />
         <br />
-        <input type="password" placeholder="Password" value={userpassword} onChange={(e) => setUserPassword(e.target.value)} style={{ marginBottom: '10px' }} required />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          style={{ marginBottom: '10px' }} 
+          value={userpassword} 
+          onChange={(e) => setUserPassword(e.target.value)}
+        />
         <br />
-        <button type="button" onClick={generateId} style={{ marginBottom: '10px' }}>Generate ID</button>
+        <button onClick={generateId} style={{ marginBottom: '10px' }}>Generate ID</button>
         <p>Auto-generated ID: {id}</p>
         <br />
-        <button type="submit">Create Account</button>
+        <button onClick={handleSubmit}>Create Account</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
+      </div>
     </div>
   );
 }

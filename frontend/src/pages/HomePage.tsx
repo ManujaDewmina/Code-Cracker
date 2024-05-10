@@ -8,6 +8,13 @@ const HomePage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
+    if (!username) {
+      setErrorMessage("Username is required");
+      return;
+    } else if (!password) {
+      setErrorMessage("Password is required");
+      return;
+    }
     try {
       const response = await getUserByUserName(axios, username);
       const userData = response.data; 
@@ -18,7 +25,7 @@ const HomePage: React.FC = () => {
         setErrorMessage("Incorrect password");
       }
     } catch (error) {
-      setErrorMessage("Incorrect Username");
+      setErrorMessage("User not found");
     }
   };
 
@@ -46,9 +53,9 @@ const HomePage: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)} 
         />
         <br />
-        <button onClick={handleLogin} style={{ marginBottom: '30px' }}>Login</button>
+        <button onClick={handleLogin} style={{ marginBottom: '10px' }}>Login</button>
         <br />
-        <div style={{ color: 'red' }}>{errorMessage}</div> 
+        <div style={{ color: 'red', marginBottom: '20px' }}>{errorMessage}</div> 
         <button onClick={handleCreateAccount}>Create Account</button>
       </div>
     </div>
