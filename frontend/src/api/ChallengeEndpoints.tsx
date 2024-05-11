@@ -62,7 +62,9 @@ export const getChallengesByDifficulty = async (axios: AxiosInstance, difficulty
 export const updateChallenge = async (axios: AxiosInstance, challengeId : string, challenge : any) => {
     const url = `${BFF_URLS.challengeService}/update/${challengeId}`
     const method = "PUT";
-    const headers = {};
+    const headers = {
+        'Content-Type': 'application/json',
+    };
     return axios.request({
         url,
         method,

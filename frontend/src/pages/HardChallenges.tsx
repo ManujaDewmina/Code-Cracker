@@ -70,6 +70,10 @@ const HardChallengePage: React.FC = () => {
         console.log(challenges);
     };
 
+    const handleChallengeClick = (challengeId: string) => {
+        window.location.href = `/view-challenge?id=${id}&challengeId=${challengeId}`;
+    };
+
     useEffect(() => {
         fetchChallengeData();
     }, [id]);
@@ -90,7 +94,7 @@ const HardChallengePage: React.FC = () => {
             <>
                 <div>
                     {Challenges.map((challenge, index) => (
-                        <div key={index}>
+                        <div key={index} style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleChallengeClick(challenge.id)}>
                             <p>Challenge Title: {challenge.title}</p>
                             <p>Challenge Difficulty: {challenge.difficulty}</p>
                             <p>Challenge Author ID: {challenge.authorid}</p>

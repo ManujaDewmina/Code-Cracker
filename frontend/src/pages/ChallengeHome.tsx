@@ -63,6 +63,10 @@ const ChallengeHomePage: React.FC = () => {
         window.location.href = `/hard-challenges?id=${id}`;
     };
 
+    const handleChallengeClick = (challengeId: string) => {
+        window.location.href = `/view-challenge?id=${id}&challengeId=${challengeId}`;
+    };
+
     const fetchChallengeData = async () => {
         const response = await getChallenges(axios);
         const fetchedChallenges = response.data; 
@@ -89,7 +93,7 @@ const ChallengeHomePage: React.FC = () => {
             <>
                 <div>
                     {challenges.map((challenge, index) => (
-                        <div key={index}>
+                        <div key={index} style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleChallengeClick(challenge.id)}>
                             <p>Challenge Title: {challenge.title}</p>
                             <p>Challenge Difficulty: {challenge.difficulty}</p>
                             <p>Challenge Author ID: {challenge.authorid}</p>

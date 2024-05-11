@@ -12,6 +12,8 @@ import EasyChallengePage from './pages/EasyChallenges';
 import MediumChallengePage from './pages/MediumChallenges';
 import HardChallengePage from './pages/HardChallenges';
 import CreateChallengePage from './pages/CreateChallenge';
+import ViewChallengePage from './pages/ViewChallenge';
+import EditChallengePage from './pages/EditChallenge';
 
 const routes = [
   { path: '/', component: HomePage },
@@ -26,6 +28,8 @@ const routes = [
   { path: '/medium-challenges', component: MediumChallengePage },
   { path: '/hard-challenges', component: HardChallengePage },
   { path: '/create-challenge', component: CreateChallengePage },
+  { path: '/view-challenge', component: ViewChallengePage },
+  { path: '/edit-challenge', component: EditChallengePage },
 ];
 
 function App() {
