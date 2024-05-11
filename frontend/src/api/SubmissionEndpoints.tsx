@@ -4,7 +4,9 @@ import { BFF_URLS } from "../links/backend";
 export const createSubmission = async (axios: AxiosInstance, submission : any) => {
     const url = `${BFF_URLS.submissionService}/upload`
     const method = "POST";
-    const headers = {};
+    const headers = {
+        'Content-Type': 'application/json',
+    };
     return axios.request({
         url,
         method,

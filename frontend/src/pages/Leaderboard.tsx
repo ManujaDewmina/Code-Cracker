@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getSubmissionByUserId, getSubmission } from '../api/SubmissionEndpoints';
+import { getSubmissionByChallengeId, getSubmission } from '../api/SubmissionEndpoints';
 import axios from 'axios';
 
 interface Submission {
@@ -13,12 +13,13 @@ interface Submission {
   file: string;
 }
 
-const SubmissionHomePage: React.FC = () => {
+const LeaderboardPage: React.FC = () => {
   const [Submission, setSubmission] = useState<Submission[]>([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get('id');
+  const challengeId = searchParams.get('challengeId');
 
   const userHome = () => {
     window.location.href = `/user-home?id=${id}`; 
@@ -28,12 +29,24 @@ const SubmissionHomePage: React.FC = () => {
     window.location.href = `/challenge-home?id=${id}`; 
   };
 
+  const getAllChallenges = () => {
+    window.location.href = `/challenge-home?id=${id}`;
+};
+
+const getMyChallenges = () => {
+    window.location.href = `/user-challenges?id=${id}`;
+};
+
+const createChallengePage = () => {
+    window.location.href = `/create-challenge?id=${id}`;
+};
+
   const submissionHome = () => {
     window.location.href = `/submission-home?id=${id}`; 
   };
 
   const fetchSubmission = async () => {
-    const submission = await getSubmissionByUserId(axios, id!);
+    const submission = await getSubmissionByChallengeId(axios, challengeId!);
     const fetchSubmissions = submission.data;
     setSubmission(fetchSubmissions);
   };
@@ -72,7 +85,7 @@ const SubmissionHomePage: React.FC = () => {
             </ul>
         </nav>
 
-        <h1>My Submission</h1>
+        <h1>Leaderboard</h1>
 
         { Submission === null ? (
           <p>No Submission Available.</p>
@@ -83,14 +96,20 @@ const SubmissionHomePage: React.FC = () => {
               <div key={index} style={{ marginBottom: '10px', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleSubmissionClick(submission.id)}>
                 <p>Submission ID: {submission.id}</p>
                 <p>Score: {submission.score}</p>
-                <p>Challenge ID: {submission.challengeId}</p>
+                <p>Submitter ID: {submission.userId}</p>
               </div>
             ))}
           </div>
         </>
       )}
+
+        <div>
+            <button onClick={getAllChallenges} style={{ marginRight: '30px' }} >All Challenges</button>
+            <button onClick={getMyChallenges} style={{ marginRight: '30px' }}>My Challenges</button>
+            <button onClick={createChallengePage} >Create Challenges</button>
+        </div>
     </div>
   );
 }
 
-export default SubmissionHomePage;
+export default LeaderboardPage;

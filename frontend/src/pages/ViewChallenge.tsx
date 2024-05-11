@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { getChallenge, deleteChallenge } from '../api/ChallengeEndpoints';
+import { createSubmission } from '../api/SubmissionEndpoints';
 import ReactMarkdown from 'react-markdown'
+import { InputWrapper } from "../components/InputWrapper";
+import ZipFileIcon from '@mui/icons-material/FolderZip';
+import InfoIcon from '@mui/icons-material/Info';
 
 interface Challenge {
     id: string;
@@ -20,6 +24,8 @@ const ViewChallengePage: React.FC = () => {
     const id = searchParams.get('id');
     const challengeId = searchParams.get('challengeId');
     const [challenge, setChallenge] = useState<Challenge | null>(null);
+    const [submissionFontColor, setSubmissionFontColor] = useState<string>('red');
+    const [submissionFile, setsubmissionFile] = useState({} as FileList);
 
     const userHome = () => {
         window.location.href = `/user-home?id=${id}`; 
@@ -65,12 +71,46 @@ const ViewChallengePage: React.FC = () => {
 
     const editThisChallenges = async () => {
         window.location.href = `/edit-challenge?id=${id}&challengeId=${challengeId}`;
-      };
+    };
     
     const deleteThisChallenges = async () => {
-    await deleteChallenge(axios, challengeId!);
-    window.location.href = `/user-challenges?id=${id}`;
+        await deleteChallenge(axios, challengeId!);
+        window.location.href = `/user-challenges?id=${id}`;
     };
+
+    const clearAllInputs = () => {
+        setsubmissionFile({} as FileList);
+    }
+
+    const addSubmission = async () => {
+        try {
+            const randomNumber = Math.floor(Math.random() * 1000000);
+            const submissionId = randomNumber.toString();
+
+            const formData = new FormData();
+            formData.append('file', submissionFile[0]);
+            formData.append('id', submissionId);
+            formData.append('fileName', 'submission');
+            formData.append('fileExtension', 'zip');
+            formData.append('userId', id!);
+            formData.append('challengeId', challengeId!);
+            const response = await createSubmission(axios, formData);
+            clearAllInputs();
+            window.location.href = `/view-challenge?id=${id}&challengeId=${challengeId}`;
+        } catch (error) {
+            console.error('Failed to create challenge:', error);
+        }
+    };
+
+    const onSubmissionFileChange = (e : any) => {
+        setsubmissionFile(prev => ({...prev, ...e.target.files}));
+        setSubmissionFontColor('green');
+
+    }
+
+    const viewLeaderboard = () => {
+        window.location.href = `/leaderboard?id=${id}&challengeId=${challengeId}`;
+    }
 
     useEffect(() => {
         if (challengeId) {
@@ -103,11 +143,26 @@ const ViewChallengePage: React.FC = () => {
                     </div>
                 )}
                     <h2>{challenge.title}</h2>
+                    <button onClick = {viewLeaderboard}>View Leaderboard</button>
                     <p>Difficulty: {challenge.difficulty}</p>
                     <p>Author: {challenge.authorid}</p>
                     <p>Challenge ID: {challengeId}</p>
                     <ReactMarkdown>{atob(challenge.readmefile)}</ReactMarkdown>
                     <button onClick={downloadTemplate}>Download Template File</button>
+                    <br />
+                    <div style={{display:'flex', alignItems: 'center'}}>
+                        <ZipFileIcon style={{marginRight:10}}/>
+                        <InputWrapper  label="Upload Submission .zip file: "><input onChange={onSubmissionFileChange} id="submissionFileInput" type="file" name="submissionFile" accept=".zip" style={{color: submissionFontColor, fontFamily:'Poppins', marginLeft:20}}/></InputWrapper>
+                    </div>
+                    <div style={{ padding: '10px', borderRadius: '8px', display: 'flex', alignItems: 'center', background: '#eff7ff'}}>
+                        <div style={{color: '#808080'}}>
+                            <p style={{ display: 'flex', alignItems: 'center'}}> 
+                                <InfoIcon sx={{marginRight: '0.5rem'}}/>
+                                Zip your main.py file and upload
+                            </p>
+                        </div>
+                    </div>
+                    <button onClick={addSubmission} style={{ marginBottom: '10px', marginTop: '10px' }}>Add Submission</button>
                 </div>
             )}
 
