@@ -58,16 +58,4 @@ To get started with CodeForge, follow these steps:
 
 ## Tech Stack
 
-![Code Forge - Mid Evaluation](https://github.com/ManujaDewmina/Distributed-Systems-Mini-Project/assets/92631934/12415e26-078b-4750-a22d-661123b4fbfb)
-
-## User service component
-
-![Userservice](https://github.com/ManujaDewmina/Distributed-Systems-Mini-Project/assets/92631934/d01b34d3-a4b1-4701-9a75-29f4ff5c4be0)
-
-## Challenge service component
-
-![Challenge Service](https://github.com/ManujaDewmina/Distributed-Systems-Mini-Project/assets/92631934/e2f49d13-c6e9-4e4c-8a2f-795222817596)
-
-## Submission service component
-
-![Submission Service](https://github.com/ManujaDewmina/Distributed-Systems-Mini-Project/assets/92631934/a6c2c251-d053-4162-b696-988b79c1fbc1)
+![Code Forge - Mid Evaluation](https://github.com/ManujaDewmina/Code-Cracker/assets/92631934/8aa802c3-0b3f-4fa8-9ff2-4e619de3a4cb)
